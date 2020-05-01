@@ -245,7 +245,9 @@ module TestCenter
               junit: File.absolute_path(report_filepath)
             }
           )
-          @options[:only_testing] = @options[:only_testing] - Fastlane::Actions::TestsFromJunitAction.run(config).fetch(:passing, Hash.new).map(&:shellsafe_testidentifier)
+
+          only_testing = @options.fetch(:only_testing, []).nil? ? [] : @options.fetch(:only_testing, [])
+          @options[:only_testing] = only_testing - Fastlane::Actions::TestsFromJunitAction.run(config).fetch(:passing, Hash.new).map(&:shellsafe_testidentifier)
           if @options[:invocation_based_tests]
             @options[:only_testing] = @options[:only_testing].map(&:strip_testcase).uniq
           end

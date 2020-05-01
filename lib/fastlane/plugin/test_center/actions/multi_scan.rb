@@ -29,7 +29,7 @@ module Fastlane
         platform = :mac
         platform = :ios_simulator if Scan.config[:destination].any? { |d| d.include?('platform=iOS Simulator') }
 
-        runner_options = params.values.merge(platform: platform)
+        runner_options = params.values.reject { |k, v| v.nil? }.merge(platform: platform)
         runner = ::TestCenter::Helper::MultiScanManager::Runner.new(runner_options)
         tests_passed = runner.run
 
